@@ -20,8 +20,8 @@ server <- function(input, output) {
       geom_bar(stat = 'identity', width= .90) + 
       coord_flip()
   })
-  output$year_out_spatiotemporal <- renderText({ paste0("Obesity in ", input$year) }) # Title
-  output$year_out_aroundworld <- renderText({ paste0("Around the world in ", input$year) }) # Title
+  output$year_out_spatiotemporal <- renderText({ paste0("World map of obesity percentage in ", input$year) }) # Title
+  output$year_out_aroundworld <- renderText({ paste0("Facts about obesity around the world in ", input$year) }) # Title
   output$obesity_F_year <- renderValueBox({
     shinydashboard::valueBox(
       meanObesityByYearSex(input$year, 'F'),
@@ -49,6 +49,14 @@ server <- function(input, output) {
       width = 4,
     )
   })
+  output$distribution_title_obesity_year <- renderText({
+    paste0(
+      "Distribution of obesity percentage among ",
+      sexToTitle(input$radio_distribution_obesity_year),
+      " in  ",
+      input$year
+    )
+  })
   output$distribution_obesity_year <- renderPlot({
     ggplot(obesityDistribution(input$year, input$radio_distribution_obesity_year), aes(x = obesity)) +
       geom_histogram(aes( color = sex, fill = sex), bins = 35, position ="identity", alpha = 0.25) +
@@ -62,7 +70,7 @@ server <- function(input, output) {
         panel.background = element_rect(fill = "white", colour = "black"),
         axis.title.x = element_text(size = 14, face = "bold"),
         axis.title.y = element_text(size = 14, face = "bold"),
-      )
+      ) 
   })
   
   # Obesity : Selected
@@ -87,12 +95,13 @@ server <- function(input, output) {
   output$plot_country <- renderPlot({
     if(input$plot_option_type_selected == "single" | input$group == "Countries"){
       ggplot( obesityByGroupSingle(input$group, input$choice, input$slider_year_selected[1], input$slider_year_selected[2]), aes(x=year, y=obesity, color=sex)) + 
-        geom_point(shape = 19) + 
-        geom_line(linetype = "solid") + 
+        geom_point() + 
+        geom_smooth() + 
         labs(
           subtitle = paste0("From ", paste0( input$slider_year_selected[1], paste0(" to ", input$slider_year_selected[2]))),
           x = "Year",
-          y = "Obesity (%)"
+          y = "Obesity (%)",
+          color = "Sex"
         ) +
         theme(
           legend.title = element_text(size = 14, face = "bold"),
@@ -104,7 +113,7 @@ server <- function(input, output) {
         scale_colour_discrete(
           name = "Sex",
           breaks = c("F", "M", "B"),
-          labels = c("Women", "Men", "Both")
+          labels = c("Females", "Males", "Both sexes")
         ) +
         scale_color_manual(
           labels = c("Women", "Men", "Both"),
@@ -115,7 +124,19 @@ server <- function(input, output) {
       ggplot(obesityByGroupMultiple(input$choice, input$slider_year_selected[1], input$slider_year_selected[2]), aes(x=year, y=obesity, color=country)) +
         geom_point() +
         geom_smooth() +
-        theme(legend.position="bottom")
+        theme(legend.position="bottom") +
+        labs(
+          subtitle = paste0("From ", paste0( input$slider_year_selected[1], paste0(" to ", input$slider_year_selected[2]))),
+          x = "Year",
+          y = "Obesity (%)",
+          color = "Country"
+        ) +
+        theme(
+          legend.title = element_text(size = 14, face = "bold"),
+          legend.text = element_text(size = 12),
+          axis.title.x = element_text(size = 14, face = "bold"),
+          axis.title.y = element_text(size = 14, face = "bold"),
+        )
     }
   })
   output$plot_option_plot_type_selected <- renderUI({
@@ -136,20 +157,27 @@ server <- function(input, output) {
   # Employment : 
   
   # Analytics :
+  output$correlation_title_plot <- renderText({
+    paste0(
+      "Employment in desk/manual jobs vs. Obesity percentage in ",
+      input$select_country_analytics
+    )
+  })
   output$correlation_plot <- renderPlot({analyticsPlotCorrelationByCountry(input$select_country_analytics)})
   output$correlation_desk_analytics <- renderValueBox({
     valueBox(
       round(analyticsCorrelationByCountryActivity(input$select_country_analytics,"D"), digits = 2),
-      "Desk jobs/obesity correlaction",
+      "Desk jobs/obesity correlation",
       icon = icon("chart-line"),
       color = if(analyticsCorrelationByCountryActivity(input$select_country_analytics,"D") < 0) "red" else "blue")
   })
   output$correlation_manual_analytics <- renderValueBox({
     valueBox(
       round(analyticsCorrelationByCountryActivity(input$select_country_analytics,"M"), digits = 2),
-      "Manual jobs/obesity correlaction",
+      "Manual jobs/obesity correlation",
       icon = icon("chart-line"),
       color = if(analyticsCorrelationByCountryActivity(input$select_country_analytics,"M") < 0) "red" else "blue")
   })
+  output$heatmap_correlation_analytics <- renderPlot({ analyticsHeatmapCorrelation() })
 }
 

@@ -92,6 +92,9 @@ body <- dashboardBody(
               width = 10,
               status = "success",
               
+              # Title for the histogram 
+              h4(strong(textOutput("distribution_title_obesity_year"))),
+              
               # Histogram
               plotOutput('distribution_obesity_year')
               
@@ -110,10 +113,10 @@ body <- dashboardBody(
               status = "primary",
               column(
                 width = 12,
-                h4(strong("Select the group")),
+                h4(strong("What?")),
                 radioButtons(
+                  label = "Select the group",
                   inputId = 'group',
-                  label = "Group",
                   choices = c(
                     "Continents",
                     "Countries"
@@ -128,7 +131,7 @@ body <- dashboardBody(
               status = "primary",
               column(
                 width = 12,
-                h4(strong("Which one")),
+                h4(strong("Where?")),
                 uiOutput('group_out'),
                 
                 # Radio buttons or nothing
@@ -143,9 +146,10 @@ body <- dashboardBody(
               status = "primary",
               
               # Range input
+              h4(strong("When?")),
               sliderInput(
                 'slider_year_selected',
-                label = "Interval",
+                label = "Select the interval",
                 min = min(obesity$year),
                 max = max(obesity$year),
                 step = 1,
@@ -211,37 +215,61 @@ body <- dashboardBody(
       # Title
       h2(strong("Analytics")),
       
-      valueBoxOutput("correlation_desk_analytics", width = 6),
-      valueBoxOutput("correlation_manual_analytics", width = 6),
-      
-      # Left side
-      column(
-        width = 9,
-        
-        box(
-          width = 12,
-          status = "success",
+      tabBox(
+        width = 12,
+        tabPanel(
+          title = "By country",
           
-          plotOutput('correlation_plot', height = 600),
-        )
-      ),
-      
-      # Right side
-      column(
-        width = 3,
-        
-        # Select input for countries
-        box(
-          width = 12,
-          status = "primary",
+          valueBoxOutput("correlation_desk_analytics", width = 6),
+          valueBoxOutput("correlation_manual_analytics", width = 6),
           
-          selectInput(
-            'select_country_analytics',
-            label = "Choose a country",
-            choices = unique(analytics$country),
-            selected = "France"
+          # Left side
+          fluidRow(
+            width = 12,
+            
+            column(
+              width = 9,
+              
+              box(
+                width = 12,
+                status = "success",
+                
+                h4(strong(textOutput("correlation_title_plot"))),
+                
+                plotOutput('correlation_plot', height = 600),
+              )
+            ),
+            
+            # Right side
+            column(
+              width = 3,
+              
+              # Select input for countries
+              box(
+                width = 12,
+                status = "primary",
+                
+                selectInput(
+                  'select_country_analytics',
+                  label = "Choose a country",
+                  choices = unique(analytics$country),
+                  selected = "France"
+                )
+              ),
+            )
           )
         ),
+        
+        tabPanel(
+          title = "Overall",
+          
+          span(
+            "Heatmap of correlation between obesity and desk/manual jobs",
+            style = "font-size:18px;font-weight:bold;"
+          ),
+          
+          plotOutput('heatmap_correlation_analytics')
+        )
       )
     )
   )

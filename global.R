@@ -26,6 +26,19 @@ analytics <- merge(
 )
 
 # Functions
+
+# sexToTitle:
+# Input :
+# Output:
+sexToTitle <- function(pSex){
+  return (ifelse(
+    pSex == "B", "both sexes",
+    ifelse(
+      pSex == "M", "males", "females"
+    )
+  ))
+}
+
 # meanObesityByYearSex: Returns a string representing the mean percentage of
 # obesity in a given year and sex 
 # Input : pYear = the year, pSex = the sex
@@ -49,7 +62,7 @@ meanObesityByYearSex <- function(pYear, pSex) {
 obesityByGroupSingle <- function(pGroup, pValue, pMinYear, pMaxYear) {
   
   if (pGroup == "Countries") {
-    return (obesity %>% filter(country == pValue, year <= pMaxYear, year >= pMinYear))
+    return (obesity %>% filter(country == pValue, sex != 'B', year <= pMaxYear, year >= pMinYear))
   } else {
     return (obesity %>% filter(continent == pValue, sex != 'B', year <= pMaxYear, year >= pMinYear) %>% group_by(sex, year) %>% summarise(obesity=mean(obesity)))
   }
@@ -154,7 +167,12 @@ analyticsPlotCorrelationByCountry <- function(pCountry){
   
   #print(cor(analytics %>% filter(country == pCountry) %>% group_by(activity), x = obesity, y = value ))
   return(
-    ggplot(analytics %>% filter(country == pCountry), aes(x = obesity, y = value)) +
+    ggplot(
+      analytics %>% 
+        filter(country == pCountry) %>%
+        mutate(activity = factor(ifelse(activity == "D", "Desktop", "Manual"))),
+      aes(x = obesity, y = value)
+      ) +
       facet_wrap(~activity, scales = "free")+
       geom_point() + 
       geom_smooth(method = "lm") +
@@ -176,4 +194,38 @@ analyticsCorrelationByCountryActivity <- function(pCountry, pActivity){
   df <- analytics %>% filter(country == pCountry, activity == pActivity)
   
   return (cor(df$obesity, df$value))
+}
+
+# analyticsCorrelationTable:
+# Inputv:
+# Output:
+analyticsCorrelationTable <- function(){
+  return (analytics %>%
+            group_by(country, activity) %>%
+            summarize(correlation = cor(obesity, value)) %>%
+            drop_na()
+  )
+}
+
+# analyticsCorrelationTable:
+# Inputv:
+# Output:
+analyticsHeatmapCorrelation <- function(){
+  return (
+    ggplot(analyticsCorrelationTable(),
+           aes(x = country, y = activity, fill = correlation)) +
+      geom_tile() +
+      labs(
+        x = "Country",
+        y = "Activity",
+        fill = "Correlation"
+      ) +
+      theme(
+        axis.text.x = element_text(angle = 90),
+        axis.title.x = element_text(size = 14, face = "bold"),
+        axis.title.y = element_text(size = 14, face = "bold"),
+      ) + 
+      scale_fill_gradientn(colours = c("red", "white", "blue")) +
+      scale_y_discrete(labels = c("D" = "Desktop", "M" = "Manual"))
+  )
 }

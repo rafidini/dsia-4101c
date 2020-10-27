@@ -175,7 +175,7 @@ analyticsPlotCorrelationByCountry <- function(pCountry){
       ) +
       facet_wrap(~activity, scales = "free")+
       geom_point() + 
-      geom_smooth(method = "lm") +
+      geom_smooth(method = "lm", colour="black") +
       labs(
         x = "Obesity (%)",
         y = "Employment (Persons)"
@@ -197,7 +197,7 @@ analyticsCorrelationByCountryActivity <- function(pCountry, pActivity){
 }
 
 # analyticsCorrelationTable:
-# Inputv:
+# Input :
 # Output:
 analyticsCorrelationTable <- function(){
   return (analytics %>%
@@ -208,7 +208,7 @@ analyticsCorrelationTable <- function(){
 }
 
 # analyticsCorrelationTable:
-# Inputv:
+# Input :
 # Output:
 analyticsHeatmapCorrelation <- function(){
   return (

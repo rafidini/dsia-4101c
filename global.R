@@ -3,6 +3,20 @@
 # in the project.
 #
 
+# Deal with the necessary packages
+packages <- read.csv("packages.csv")
+
+# Function that install packages
+install_packs <- function(row){
+  print(paste0("Installing ", row[1]))
+  install.packages(row[1])
+  print(paste0(row[1], " is installed."))
+  print("")
+}
+
+# Install the packages
+apply(packages, 1, install_packs)
+
 # Load the processing functions
 source("process.R")
 

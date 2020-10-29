@@ -155,7 +155,7 @@ processObesity <- function(pObesityPath){
 }
 
 processEmployment <- function(pEmploymentPath){
-  employment <- read.csv(pEmploymentPath)
+  employment <- read.csv(pEmploymentPath, fileEncoding="UTF-8-BOM")
   
   # Rename columns of employment
   employment <- employment %>% rename(

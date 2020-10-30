@@ -156,7 +156,7 @@ server <- function(input, output) {
   
   # Employment : 
   
-  # Analytics :
+  # Analytics : By country
   output$correlation_title_plot <- renderText({
     paste0(
       "Employment in desk/manual jobs vs. Obesity percentage in ",
@@ -178,6 +178,8 @@ server <- function(input, output) {
       icon = icon("chart-line"),
       color = if(analyticsCorrelationByCountryActivity(input$select_country_analytics,"M") < 0) "red" else "blue")
   })
+
+  # Analytics : Overall
   output$heatmap_correlation_analytics <- renderPlot({ analyticsHeatmapCorrelation() })
 }
 

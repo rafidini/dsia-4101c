@@ -157,7 +157,176 @@ Ce fichier *Markdown*, que vous êtes actuellement en train de lire normalement,
 - Guide développeur
 - Rapport d'analyse
 
+### B. *data*
+
+Ce répertoire contient l'ensemble des jeux de données utilisés pour le projet. Voici leurs utilités:
+
+- **employment.csv**: Le jeu de données sur l'emploi, *Employment by activities (ISIC Rev.4)*.
+
+- **obesity.csv**: Le jeu de données sur l'obésité, *Obesity among adults by country, 1975-2016*.
+
+### C. *images*
+
+Ce répertoire contient l'ensemble des images pour le projet, mais ces images servent principalement pour la rédaction de ce guide.
+
+### D. *packages.csv*
+
+Ce fichier texte contient les noms des différents packages nécessaires à l'utilisation du projet.
+
+### E. *process.R*
+
+Ce script *R* sert au traitement des données.
+
+### F. *app.R*
+
+Ce script *R* continent le code pour lancer l'application.
+
+### G. *global.R*
+
+Ce script *R* exécute le traitement des données, contient les fonctions à utiliser pour générer les graphiques/textes/valeurs necessaires à l'application.
+
+### H. *ui.R* & *server.R*
+
+Ces scripts *R* s'occupent de l'interface utilisateur (*ui.R*) et du serveur (*server.R*). En soit *ui.R* permet de créer la page de manière visuelle mais l'interactivité avec les données se fait grâce à *server.R*.
+
 ## 2. Le code
+
+### A. process.R
+
+Ce script est structuré de la manière suivante:
+
+```R
+
+# This script contains the processing code.
+#
+
+#- Libraries -#
+...
+
+#- Functions -#
+...
+
+#-- Processing functions --#
+...
+```
+
+- *Libraries*: contient l'importations des packages necessaires à ce script.
+- *Functions*: contient les fonctions qui permettent de faire de petites opérations (*ex: Récupérer le nom du continent à partir d'un pays, extraire les réels dans une chaîne de caractères.*).
+- *Processing functions*: contient les fonctions qui vont traiter individuellement un jeu de données.
+
+### B. global.R
+
+```R
+#
+# This script contains objects that will be used through every R script
+# in the project.
+#
+
+#- Necessary packages -#
+...
+
+#- Load packages -#
+...
+
+#- Data processing -#
+...
+
+#- Functions -#
+...
+```
+- *Necessary packages*: contient le code qui va installer les packages nécessaires au projet.
+- *Load packages*: importation des packages.
+- *Data processing*: appel des fonctions de traitement de données présents dans *process.R*.
+- *Functions*: contient les différentes fonctions pour générer des graphiques/dataframe/valeurs que l'on utilisera dans *server.R*.
+
+### C. ui.R
+
+```R
+#
+# This script contains the user interface code.
+#
+
+body <- dashboardBody(...)
+
+header <- dashboardHeader(
+  title = "Menu"
+)
+
+sidebar = dashboardSidebar(...)
+
+ui <- dashboardPage(
+  
+  # Theme of the app
+  skin = "purple",
+  
+  # Skeleton
+  header,
+  sidebar,
+  body
+)
+```
+Voici le rôle de chacunes de ces variables: 
+- *body*: Cette variable contient le corps de l'application grâce à la fonction *dashboardBody*.
+- *header*: Cette variable contient l'entête de la page grâce à la fonction *dashboarHeader*, il contient seulement le titre dans notre cas.
+- *sidebar*: Cette variable contient la bar de navigation latéral de l'application grâce à la fonction *dashboarSidebar*, il contient des items qui permettent de changer de page.
+- *ui*: Cette variable contient l'ensemble de l'interface grâce à la fonction *dashboarPage* qui prend en paramètre *nody*, *sidebar* et *ui*.
+
+### D. server.R
+
+```R
+#
+# This script contains the code for the server.
+#
+
+# Define server logic required to build interactive user interface
+server <- function(input, output) {
+  # Obesity : Yearly
+  ...
+
+  # Obesity : Selected
+  ...
+
+  # Obesity : Selected
+  ...
+
+  # Employment
+  ...
+
+  # Analytics : By country
+  ...
+
+  # Analytics : Overall
+  ...
+}
+````
+
+LA majorité du script est contenu dans la défition de la fonction *server*. Celui-ci est divisé par page <ins>et</ins> sous-page. Comme ci-dessus on parcours la partie *Obesity*, *Employment* puis *Analytics*. Dans chaque partie il y a des choses comme ceci:
+
+```R
+output$map <- renderLeaflet({ obesityMapByYear(input$year) })
+````
+
+Ici on associe au composant du projet ayant comme identifiant *map* la carte qui est générée avec la fonction renderLeaflet et créée *obesityMapByYear* avec le paramètre *input$year* qui est généré par le composant, pouvant prendre une valeur en entrée, de l'interface utilisateur ayant l'identifiant *year*.
+
+### E. app.R
+
+```R
+#
+# This script is for the application.
+#
+
+# Load the ui and server part of the app
+source("ui.R")
+source("server.R")
+
+
+# Run the application
+shinyApp(ui = ui, server = server)
+```
+
+Ce petit script, mais très important, est divisé en deux parties.
+- L'importation de l'interface utilisateur et du serveur qui sont dans les scripts *ui.R* et *server.R*.
+- L'appel de la fonction *shinyApp* avec pour paramètre *ui* et *server* définis dans les scripts vus précédemment.
 
 # III. Rapport d'analyse
 

@@ -3,6 +3,8 @@
 # in the project.
 #
 
+#- Necessary packages -#
+
 # Deal with the necessary packages
 packages <- read.csv("packages.csv")
 
@@ -17,6 +19,8 @@ install_packs <- function(row){
 # Install the packages
 apply(packages, 1, install_packs)
 
+#- Load packages -#
+
 # Load the processing functions
 source("process.R")
 
@@ -30,6 +34,8 @@ library(tidyverse)
 library(shiny)
 library(shinydashboard)
 
+#- Data processing -#
+
 # Process the data
 obesity <- processObesity('data/obesity.csv')
 employment <- processEmployment('data/employment.csv')
@@ -39,7 +45,7 @@ analytics <- merge(
   by = c("continent", "country", "year")
 )
 
-# Functions
+#- Functions -#
 
 # sexToTitle:
 # Input :

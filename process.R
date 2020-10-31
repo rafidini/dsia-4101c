@@ -114,7 +114,7 @@ convertSubjectToActivity <- function(subject){
 
 #-- Processing functions --#
 processObesity <- function(pObesityPath){
-  obesity <- read.csv(pObesityPath, na = c("No data"))
+  obesity <- read.csv(pObesityPath, na = c("No data"), fileEncoding="UTF-8-BOM")
   
   # Rename columns of obesity
   obesity <- obesity %>% rename(

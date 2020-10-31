@@ -6,17 +6,9 @@
 #- Necessary packages -#
 # Deal with the necessary packages
 packages <- read.csv("packages.csv")
-
-# Function that install packages
-install_packs <- function(row){
-  print(paste0("Installing ", row[1]))
-  install.packages(row[1])
-  print(paste0(row[1], " is installed."))
-  print("")
-}
-
-# Install the packages
-apply(packages, 1, install_packs)
+list.of.packages <- c(packages$packages)
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
 
 #- Load packages -#
 
@@ -206,7 +198,7 @@ employmentMapByYear <- function(pYear,pType) {
     "<strong> Country: </strong> ",
     map$country_name, "<br/> ",
     "<strong> Employment: </strong> ",
-    map$employment, "<br/> "
+    map$value, "<br/> "
   ) %>%
     lapply(htmltools::HTML)
   

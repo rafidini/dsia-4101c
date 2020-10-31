@@ -42,7 +42,7 @@ ___
 
 ### A. Langage *R*
 
-Dans un premier temps, afin d'utiliser notre projet il faudra posséder **R version 4.0.2** de préférence sur votre appareil. Pour cela, que votre appareil soit sous Linux, macOS, Windows ou autre, rendez vous la page de téléchargement de Python en cliquant [ici](https://cran.r-project.org/mirrors.html). Puis suivez les instructions lors de l'installation.
+Dans un premier temps, afin d'utiliser notre projet il faudra posséder **R version 4.0.2** de préférence sur votre appareil. Pour cela, que votre appareil soit sous Linux, macOS, Windows ou autre, rendez vous la page de téléchargement de R en cliquant [ici](https://cran.r-project.org/mirrors.html). Puis suivez les instructions lors de l'installation.
 
 ### B. RStudio
 
@@ -233,12 +233,91 @@ Ce script est structuré de la manière suivante:
 ...
 
 #-- Processing functions --#
+processObesity <- function(pObesityPath){...}
+
+processEmployment <- function(pEmploymentPath){...}
 ...
 ```
 
 - *Libraries*: contient l'importations des packages necessaires à ce script.
 - *Functions*: contient les fonctions qui permettent de faire de petites opérations (*ex: Récupérer le nom du continent à partir d'un pays, extraire les réels dans une chaîne de caractères.*).
 - *Processing functions*: contient les fonctions qui vont traiter individuellement un jeu de données.
+
+- #### Traitement de *obesity* dans *"processObesity"*:
+
+- Renommage de certaines variables:
+  
+| Anciens noms | Nouveaux noms |
+|---|---|
+| Obesity | str_obesity |
+| Country | country |
+| Year | year |
+| Sex | sex |
+
+- Création de la variable *continent*:
+
+On utilise alors la fonction ***countrycode*** du package *countrycode* pour créer la variable continent. Afin de gérer quelques exceptions, la fonction ***convertCountryNameToContinent*** a été créée.
+
+- Extraction de réels à partir d'une chaîne de caractères:
+
+La fonction *extractFloatFromString(str, index)* permet d'extraire un réel dans une chaîne de caractère à un indice donné. On extrait les réels dans la variable str_obesity anciennement Obesity (%) en sachant que les valeurs de cette variable sont des chaînes de caractères dans le format suivant:
+
+```Math
+S_i="X_{i,0}[X_{i,1}-X_{i,2}]", S_i \in \text{obesity}, X_{i,j} \in \mathbb{R}
+```
+
+Donc:
+
+```Math
+extractFloatFromString(S_i, 0)=X_{i,0} \\
+extractFloatFromString(S_i, 1)=X_{i,1} \\
+extractFloatFromString(S_i, 2)=X_{i,2} \\
+```
+
+- Création de la variable *country_code*:
+
+On utilise aussi alors la fonction ***countrycode*** du package *countrycode* pour créer la variable continent.
+
+- Changement des valeurs pour la variable sex
+
+| Anciennes valeurs | Nouvelles valeurs |
+|---|---|
+| Both sexes | B |
+| Male | M |
+| Female | F |
+
+- #### Traitement de *employment* dans *"processEmployment"*:
+
+- Renommage de certaines variables:
+  
+| Anciens noms | Nouveaux noms |
+|---|---|
+|Country | country | 
+|LOCATION |country_code | 
+|Time | year |
+|Sex |sex |
+|Subject | subject |
+|Value | value |
+
+- Changement des valeurs pour la variable value
+
+Étant donnée que les valeurs de la variable value sont des nombres qui représentent des milliers, on multiple les valeurs de cette colonne par 1 000.
+
+- Création de la variable *continent*:
+
+Comme pour obesity, on va créer la variable continent à partir de ***countrycode*** et la fonction *convertCountryNameToContinent* qui a été créée à l'occasion
+
+- Changement des valeurs pour la variable sex
+
+| Anciennes valeurs | Nouvelles valeurs |
+|---|---|
+| All persons | B |
+| Males | M |
+| Females | F |
+
+- Création de la variable *activity*:
+  
+Celle-ci a été créée de manière subjective à notre binôme, les détails sont présents dans la fonction ***convertSubjectToActivity***.
 
 ### B. global.R
 

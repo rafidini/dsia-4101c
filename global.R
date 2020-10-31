@@ -4,7 +4,6 @@
 #
 
 #- Necessary packages -#
-
 # Deal with the necessary packages
 packages <- read.csv("packages.csv")
 
@@ -58,6 +57,8 @@ sexToTitle <- function(pSex){
     )
   ))
 }
+
+#- Obesity -#
 
 # meanObesityByYearSex: Returns a string representing the mean percentage of
 # obesity in a given year and sex 
@@ -179,6 +180,128 @@ obesityCountryDifferenceInterval <- function(pCountry, pMinYear, pMaxYear){
   
   return (difference)
 }
+
+#- Employment -#
+
+# employmentMapByYear: Return a Map plot of employment for a given year
+# Input : pYear = the year
+# Output: a plot
+employmentMapByYear <- function(pYear,pType) {
+  map <- ne_countries()
+  names(map)[names(map) == "iso_a3"] <- "country_code"
+  names(map)[names(map) == "name"] <- "country_name"
+  
+  copy <- data.frame(employment %>% mutate(value = log(value)))
+  df <- copy %>% filter(year == pYear, sex == 'B', activity ==pType) %>% select(country_code, country, value)
+  
+  map$value <- df[match(map$country_code, df$country_code), "value"]
+  
+  pal <- colorBin(
+    palette = if(pType =='M') "Blues"  else "Reds", 
+    domain = map$value,
+    bins = seq(6, max(df$value, na.rm = TRUE), by = 2 )
+  )
+  
+  map$labels <- paste0(
+    "<strong> Country: </strong> ",
+    map$country_name, "<br/> ",
+    "<strong> Employment: </strong> ",
+    map$employment, "<br/> "
+  ) %>%
+    lapply(htmltools::HTML)
+  
+  return (
+    leaflet(map) %>%
+      addTiles() %>%
+      addProviderTiles(providers$OpenMapSurfer.Hybrid) %>%
+      setView(lng = 0, lat = 30, zoom = 2) %>%
+      addPolygons(
+        fillColor = ~ pal(value),
+        color = "white",
+        fillOpacity = 0.7,
+        label = ~labels,
+        highlight = highlightOptions(
+          color = "black",
+          bringToFront = TRUE
+        )
+      ) %>%
+      leaflet::addLegend(
+        pal = pal, values = ~value,
+        opacity = 0.7, title = "Employment (log scale)"
+      )
+  )
+}
+
+# meanEmploymentByYearSex: Returns a string representing the mean value of manual employment
+# in a given year and sex 
+# Input : pYear = the year, pSex = the sex
+# Output: a string
+meanEmploymentByYearSex <- function(pYear, pSex, pType) {
+  result <- (employment %>% filter(sex==pSex, year==pYear,activity ==pType)  %>% group_by(sex,year,activity) %>% summarize(total=mean(value)))
+  
+  result <- (as.integer(result$total))
+  
+  return (result)
+}
+
+# employmentCountryDifferenceInterval:
+# Input :
+# Output:
+employmentCountryDifferenceInterval <- function(pCountry, pMinYear, pMaxYear, pType){
+  employmentCountry <- employment %>% filter(country == pCountry, sex == 'B', activity == pType)
+  before <- employmentCountry %>% filter(year == pMinYear)
+  after <- employmentCountry %>% filter(year == pMaxYear) 
+  
+  difference <- (sum(after$value)   - sum(before$value)) 
+  
+  if(difference >= 0)
+    difference <- paste0("+", difference)
+  
+  return (difference)
+}
+
+# employmentByGroupSingle: Returns a DataFrame representing the type of employment during a 
+# given period for a given group
+# Input : pGroup = string of the group ('Countries' or 'Continents'),
+#         pValue = name of the Country/Continent, 
+#         pMinYear = minimum year, pMaxYear = maximum year
+# Output: a DataFrame
+employmentByGroupSingle <- function(pGroup, pValue, pMinYear, pMaxYear, pType) {
+  
+  if (pGroup == "Countries") {
+    return (employment %>% filter(country == pValue, sex == 'B', year <= pMaxYear, year >= pMinYear, activity == pType)) %>% group_by(year) %>% summarise(value=sum(value))
+  } else {
+    return (employment %>% filter(continent == pValue, sex != 'B', year <= pMaxYear, year >= pMinYear, activity == pType) %>% group_by(sex, year) %>% summarise(value=sum(value)))
+  }
+}
+
+# employmentByGroupMultiple: Returns a DataFrame representing the type of employment during a 
+# given period for a given continent
+# Input : pValue = name of the Continent, pMinYear = minimum year
+#         pMaxYear = maximum year
+# Output: a DataFrame
+employmentByGroupMultiple <- function(pValue, pMinYear, pMaxYear, pType){
+  return (
+    employment %>%
+      filter(sex == 'B', year >= pMinYear, year <= pMaxYear, continent == pValue, activity == pType) %>%
+      group_by(country, year) %>%
+      summarise(value=mean(value))
+  )
+}
+
+# employmentDistribution: Returns a DataFrame representing the manual employment for a given
+# year and sex.
+# Input : pYear = the year, pSex = the sex
+# Output: a DataFrame
+employmentDistribution <- function(pYear, pSex, pType) {
+  
+  return (
+    employment %>%
+      filter(activity ==pType, year == pYear, if(pSex == 'B') sex != pSex else sex == pSex)
+  )
+}
+
+#- Analytics -#
 
 # analyticsPlotCorrelationByCountry:
 # Input :

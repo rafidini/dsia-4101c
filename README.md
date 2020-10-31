@@ -133,6 +133,28 @@ Sur cette sous-page, on peut avoir accès aux données brutes sous la forme d'un
 
 ### C. Page *Employment*
 
+Sur cette page, *Employment*,  on utilise le jeu de données *Employment by activities (ISIC Rev.4)*. Celle-ci est divisée en plusieurs sous-pages comme *Obesity*:
+
+- #### *Yearly*
+  
+![page_employment.png](images/utilisation/page_employment.png)
+
+Sur cette sous-page, on peut visualiser différents faits annuels sur l'emploi selon le type d'activité indiqué dans le monde. Il y a une carte qui permet de visualiser répartition de l'emploi dans le monde et la distribution par sexe de l'emploi (histogramme en bas de la page).
+
+- **<ins>Remarques:</ins>** Toute la carte ne sera pas colorée car les données ne prennent en compte seulement les pays membre de l'OECD qui ne comptent que 37 pays membres.
+
+- #### *Selected*
+
+![page_employment_selected.png](images/utilisation/page_employment_selected.png)
+
+Sur cette sous-page, on peut visualiser l'évolution de l'emploi au sein d'un pays/continent dans un interval donnée selon un type d'activité.
+
+- #### *Raw data*
+
+![page_employment_rawdata.png](images/utilisation/page_employment_rawdata.png)
+
+Sur cette sous-page, on peut avoir accès aux données brutes sous la forme d'un tableau.
+
 ### D. Page *Analytics*
 
 Sur cette page, *Analytics*, on utilise les deux jeux de données utilisés pour les pages *Obesity* et *Employment*. Celle-ci est aussi divisée en plusieurs sous-pages:
@@ -141,9 +163,13 @@ Sur cette page, *Analytics*, on utilise les deux jeux de données utilisés pour
 
 ![page_analytics.png](images/utilisation/page_analytics.png)
 
+Sur cette sous-page, on peut visualiser la correlation entre l'obésité et les emplois bureautiques/manuels pour un pays. On a un graphique avec une courbe qui a pour abscisse le pourcentage d'obésité et en ordonnée le nombre d'employés dans une activité et on a aussi le coefficient de correlation afficher au dessus. Si la correlation est négative alors l'élément devient rouge sinon si elle est positive, bleue.
+
 - #### *Overall*
 
 ![page_analytics_overall.png](images/utilisation/page_analytics_overall.png)
+
+Sur cette sous-page, on peut visualiser la correlation entre l'obésité et les emplois bureautiques/manuels pour tout les pays sous forme de "*carte de chaleur*" (*heatmap*) où la couleur représente la correlation (rouge=négative, bleu=positive), l'abscisse les pays et l'ordonnée le type d'activité.
 
 # II. Guide développeur
 

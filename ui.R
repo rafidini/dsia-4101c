@@ -206,6 +206,207 @@ body <- dashboardBody(
       # Title
       h2(strong("Employment")),
       
+      tabBox(
+        title = icon('suitcase'),
+        width = 12,
+        
+        id = "ep",
+        
+        #Employment Yearly
+        tabPanel(
+          title = "Yearly",
+          # Picker for the year
+          fluidRow(
+            box(
+              width = 4,
+              status = "primary",
+              # Radio input for sex
+              h4(strong("Select a type")),
+              radioButtons(
+                inputId = 'radio_type_employment',
+                label = "Select a type of activity",
+                choices = c("Desk" = "D", "Manual" = "M"),
+                selected = "D",
+              )
+            ),
+            
+            box(
+              width = 8,
+              status = "success",
+              h4(strong("Select a year to visualize")),
+              sliderInput(
+                inputId = 'year_E',
+                label = 'Year',
+                min = min(employment$year),
+                max = max(employment$year),
+                value = min(employment$year),
+                step = 1
+              )
+            )
+          ),
+          
+          h4(strong(textOutput("year_out_aroundworld_E"))),
+          
+          # Around the world Content
+          fluidRow(
+            # Box for the percentage of manual employment in the world
+            valueBoxOutput('employment_B_year'),
+            
+            # Box for the percentage of manual employment in the world for men
+            valueBoxOutput('employment_M_year'),
+            
+            # Box for the percentage of manual employment in the world for women
+            valueBoxOutput('employment_F_year')
+          ),
+          
+          # Next Subtitle (2)
+          h4(strong(textOutput("year_out_spatiotemporal_E"))),
+          
+          # Employment in spatiotemporaldimension Content
+          fluidRow(
+            box(
+              width = 12,
+              status = "info",
+              column(
+                width = 12,
+                # Map
+                leafletOutput("map_E", height = 750)
+              ),
+            ),
+          ),
+          
+          # Distribution of employment 
+          fluidRow(
+            box(
+              width = 2,
+              status = "primary",
+              
+              # Radio input for sex
+              radioButtons(
+                inputId = 'radio_distribution_employment_year_S',
+                label = "Select a sex to display",
+                choices = c("Males" = "M", "Females" = "F", "Both" = "B"),
+                selected = "B",
+              )
+            ),
+            
+            box(
+              width = 10,
+              status = "success",
+              
+              # Title for the histogram 
+              h4(strong(textOutput("distribution_title_employment_year"))),
+              
+              # Histogram
+              plotOutput('distribution_employment_year')
+              
+            )
+          ),
+        ),
+        
+        # Content for selected data
+        tabPanel(
+          title = "Selected",
+          # Widgets allowing the user to choose a group
+          fluidRow(
+            box(
+              width = 4,
+              status = "primary",
+              # Radio input for sex
+              h4(strong("Select a type")),
+              radioButtons(
+                inputId = 'radio_type_employment_S',
+                label = "Select a type of activity",
+                choices = c("Desk" = "D", "Manual" = "M"),
+                selected = "D",
+              )
+            ),
+            box(
+              width = 4,
+              status = "primary",
+              column(
+                width = 12,
+                h4(strong("What?")),
+                radioButtons(
+                  label = "Select the group",
+                  inputId = 'group_E',
+                  choices = c(
+                    "Continents",
+                    "Countries"
+                  )
+                )
+              )
+            ),
+            
+            # Widgets allowing the user to choose a sub-group 
+            box(
+              width = 4,
+              status = "primary",
+              column(
+                width = 12,
+                h4(strong("Where?")),
+                uiOutput('group_out_E'),
+              )
+            ),
+          ),
+          
+          fluidRow(
+            box(
+              width = 12,
+              status = "primary",
+              
+              # Range input
+              h4(strong("When?")),
+              sliderInput(
+                'slider_year_selected_E',
+                label = "Select the interval",
+                min = min(employment$year),
+                max = max(employment$year),
+                step = 1,
+                round = TRUE,
+                value = c(2010, 2016)
+              ),
+            ),
+          ),
+          
+          # Box containing one plot
+          fluidRow(
+            # Basic lineplot of obesity for
+            box(
+              status = "success",
+              width = 12,
+              
+              # Title
+              div(
+                span(
+                  textOutput('choice_selected_E', inline = TRUE),
+                  style = "font-size:18px;font-weight:bold;"
+                ),
+                span(
+                  textOutput('difference_selected_E', inline = TRUE),
+                  style = "font-size:14px;vertical-align: super;color:red;font-style:bold;"
+                )
+                
+              ),
+              
+              # Plot
+              column(
+                width = 12,
+                
+                # Plot for employment in country in a given range
+                plotOutput("plot_country_E", height = 650)
+              ),
+            ),
+          )
+        ),
+        
+        #Employment raw data
+        tabPanel(
+          title = "Raw data",
+          
+          dataTableOutput('employment_raw')
+        )
+      )
     ),
     
     # Obesity & Employment page

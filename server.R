@@ -154,7 +154,133 @@ server <- function(input, output) {
   # Obesity : Raw data
   output$obesity_raw <- renderDataTable({obesity})
   
-  # Employment : 
+  # Employment : Yearly
+  output$map_E <- renderLeaflet({ employmentMapByYear(input$year_E,input$radio_type_employment) }) 
+  output$top_employment <- renderPlot({
+    ggplot(
+      employment %>% 
+        filter(sex == 'B', year == input$year_E) %>%
+        select(country, value) %>%
+        arrange(desc(value)) %>%
+        top_n(10)
+      , 
+      aes(x = country, y = value, fill = country)
+    ) + 
+      geom_bar(stat = 'identity', width= .90) + 
+      coord_flip()
+  })
+  output$year_out_spatiotemporal_E <- renderText({ paste0("World map of manual percentage in ", input$year_E) }) # Title
+  output$year_out_aroundworld_E <- renderText({ paste0("Facts about manual around the world in ", input$year_E) }) # Title
+  output$employment_F_year <- renderValueBox({
+    shinydashboard::valueBox(
+      meanEmploymentByYearSex(input$year_E, 'F', input$radio_type_employment),
+      subtitle = "Employment around the globe for women",
+      icon = icon("venus"),
+      color = "fuchsia",
+      width = 4,
+    )
+  })
+  output$employment_B_year <- renderValueBox({
+    shinydashboard::valueBox(
+      meanEmploymentByYearSex(input$year_E, 'B',input$radio_type_employment),
+      subtitle = "Employment around the globe",
+      icon = icon("globe"),
+      color = "light-blue",
+      
+    )
+  })
+  output$employment_M_year <- renderValueBox({
+    shinydashboard::valueBox(
+      meanEmploymentByYearSex(input$year_E, 'M',input$radio_type_employment),
+      subtitle = "Employment around the globe for men",
+      icon = icon("mars"),
+      color = "blue",
+      width = 4,
+    )
+  })
+  output$distribution_title_employment_year <- renderText({
+    paste0(
+      "Distribution of manual percentage among ",
+      sexToTitle(input$radio_distribution_employment_year_S),
+      " in  ",
+      input$year_E
+    )
+  })
+  output$distribution_employment_year <- renderPlot({
+    ggplot(employmentDistribution(input$year_E, input$radio_distribution_employment_year_S, input$radio_type_employment), aes(x = value)) +
+      geom_histogram(aes( color = sex, fill = sex), bins = 35, position ="identity", alpha = 0.25) +
+      scale_color_manual(values = c("M" = "blue", "F" = "red"), labels = c("M" = "Males", "F" = "Females")) +
+      scale_fill_manual(values = c("M" = "blue", "F" = "red"), labels = c("M" = "Males", "F" = "Females")) +
+      labs(
+        x = if (input$radio_type_employment == "M") "Manual" else "Desk",
+        y = "Distribution"
+      ) +
+      theme(
+        panel.background = element_rect(fill = "white", colour = "black"),
+        axis.title.x = element_text(size = 14, face = "bold"),
+        axis.title.y = element_text(size = 14, face = "bold"),
+      ) 
+  })
+  
+  # Employment : Selected
+  output$group_out_E <- renderUI({
+    selectInput(
+      inputId = 'choice_E',
+      label = input$group_E,
+      choices = if (input$group_E=="Continents") { unique(employment$continent) } else { unique(employment$country) },
+      selected = if (input$group_E=="Continents") { 'Asia' } else { 'France' }
+    )
+    
+  })
+  output$difference_selected_E <- renderText({
+    if(input$group_E == "Countries")
+      employmentCountryDifferenceInterval(input$choice_E, input$slider_year_selected_E[1], input$slider_year_selected_E[2],input$radio_type_employment_S)
+    else
+      " "
+  })
+  output$choice_selected_E <- renderText({
+    paste0('Employment for men and women in ', input$choice_E)
+  })
+  output$plot_country_E <- renderPlot({
+    if(input$group_E == "Countries"){
+      ggplot( employmentByGroupSingle(input$group_E, input$choice_E, input$slider_year_selected_E[1], input$slider_year_selected_E[2],input$radio_type_employment_S), aes(x=year, y=value)) + 
+        geom_point() + 
+        geom_smooth() + 
+        labs(
+          subtitle = paste0("From ", paste0( input$slider_year_selected_E[1], paste0(" to ", input$slider_year_selected_E[2]))),
+          x = "Year",
+          y = if (input$radio_type_employment_S == 'M') "Manual" else "Desk"
+          
+        ) +
+        theme(
+          legend.title = element_text(size = 14, face = "bold"),
+          legend.text = element_text(size = 12),
+          axis.title.x = element_text(size = 14, face = "bold"),
+          axis.title.y = element_text(size = 14, face = "bold"),
+        ) 
+      
+    }
+    else {
+      ggplot(employmentByGroupMultiple(input$choice_E, input$slider_year_selected_E[1], input$slider_year_selected_E[2],input$radio_type_employment_S), aes(x=year, y=value, color=country)) +
+        geom_line() +
+        theme(legend.position="bottom") +
+        labs(
+          subtitle = paste0("From ", paste0( input$slider_year_selected_E[1], paste0(" to ", input$slider_year_selected_E[2]))),
+          x = "Year",
+          y = "Obesity (%)",
+          color = "Country"
+        ) +
+        theme(
+          legend.title = element_text(size = 14, face = "bold"),
+          legend.text = element_text(size = 12),
+          axis.title.x = element_text(size = 14, face = "bold"),
+          axis.title.y = element_text(size = 14, face = "bold"),
+        )
+    }
+  })
+  
+  # Employment : Raw data 
+  output$employment_raw <- renderDataTable({employment})
   
   # Analytics : By country
   output$correlation_title_plot <- renderText({

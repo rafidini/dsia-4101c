@@ -262,13 +262,13 @@ On utilise alors la fonction ***countrycode*** du package *countrycode* pour cr�
 
 La fonction *extractFloatFromString(str, index)* permet d'extraire un réel dans une chaîne de caractère à un indice donné. On extrait les réels dans la variable str_obesity anciennement Obesity (%) en sachant que les valeurs de cette variable sont des chaînes de caractères dans le format suivant:
 
-```Math
+```math
 S_i="X_{i,0}[X_{i,1}-X_{i,2}]", S_i \in \text{obesity}, X_{i,j} \in \mathbb{R}
 ```
 
 Donc:
 
-```Math
+```math
 extractFloatFromString(S_i, 0)=X_{i,0} \\
 extractFloatFromString(S_i, 1)=X_{i,1} \\
 extractFloatFromString(S_i, 2)=X_{i,2} \\

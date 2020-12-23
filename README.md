@@ -1,4 +1,4 @@
-⚠️ **<ins style="color:red"><span style="color:red">Important:</span></ins>**
+**<ins style="color:red"><span style="color:red">Important:</span></ins>**
 Avant tout, si le nom du document n'est pas README.html alors il est conseillé de lire le README.html car celui-ci permet d'afficher les couleurs dans le rapport d'analyse contrairement au <span>README.md</span>.
 
 # Introduction
@@ -23,7 +23,7 @@ Et nos jeux de données sont:
 - *[Employment by activities (ISIC Rev.4)](https://stats.oecd.org/Index.aspx?QueryId=3491)*
   > *source: OECD Stats*
 
-#### Problématique
+####  1. <a name='Problmatique'></a>Problématique
 Alors notre binôme s'est demandé: <ins>*Existe t'il un lien entre l'obesité et les emplois bureautiques <sup>et</sup>/<sub>ou</sub> manuels?*</ins>
 
 <br>
@@ -32,29 +32,62 @@ ___
 
 # Table des matières
 
-[[_TOC_]]
+* 1. [1. Installation & Téléchargement](#InstallationTlchargement)
+	* 1.1. [A. Langage *R*](#A.LangageR)
+	* 1.2. [B. RStudio](#B.RStudio)
+	* 1.3. [C. Le dashboard](#C.Ledashboard)
+		* 1.3.1. [Télécharger le projet](#Tlchargerleprojet)
+* 2. [2. Installation des packages nécessaires et exécution](#Installationdespackagesncessairesetexcution)
+* 3. [3. Utilisation](#Utilisation)
+	* 3.1. [A. Bar de navigation](#A.Bardenavigation)
+	* 3.2. [B. Page *Obesity*](#B.PageObesity)
+	* 3.3. [C. Page *Employment*](#C.PageEmployment)
+	* 3.4. [D. Page *Analytics*](#D.PageAnalytics)
+* 4. [1. Les répertoires & fichiers](#Lesrpertoiresfichiers)
+	* 4.1. [A. *README.md*](#A.README.md)
+	* 4.2. [B. *data*](#B.data)
+	* 4.3. [C. *images*](#C.images)
+	* 4.4. [D. *packages.csv*](#D.packages.csv)
+	* 4.5. [E. *process.R*](#E.process.R)
+	* 4.6. [F. *app.R*](#F.app.R)
+	* 4.7. [G. *global.R*](#G.global.R)
+	* 4.8. [H. *ui.R* & *server.R*](#H.ui.Rserver.R)
+* 5. [2. Le code](#Lecode)
+	* 5.1. [A. process.R](#A.process.R)
+	* 5.2. [B. global.R](#B.global.R)
+	* 5.3. [C. ui.R](#C.ui.R)
+	* 5.4. [D. server.R](#D.server.R)
+	* 5.5. [E. app.R](#E.app.R)
+* 6. [1. Les données](#Lesdonnes)
+	* 6.1. [A. Obesity among adults by country, 1975-2016](#A.Obesityamongadultsbycountry1975-2016)
+	* 6.2. [B. Employment by activities (ISIC Rev.4)](#B.EmploymentbyactivitiesISICRev.4)
+* 7. [2. Observations](#Observations)
+	* 7.1. [A. Obesity among adults by country, 197=5-2016](#A.Obesityamongadultsbycountry1975-2016-1)
+	* 7.2. [B. Employment by activities (ISIC Rev.4)](#B.EmploymentbyactivitiesISICRev.4-1)
+	* 7.3. [C. Comparaison des jeux de données](#C.Comparaisondesjeuxdedonnes)
+* 8. [3. Conclusion](#Conclusion)
 ___
 
 
 # I. Guide utilisateur
 
-## 1. Installation & Téléchargement
+##  1. <a name='InstallationTlchargement'></a>1. Installation & Téléchargement
 
-### A. Langage *R*
+###  1.1. <a name='A.LangageR'></a>A. Langage *R*
 
 Dans un premier temps, afin d'utiliser notre projet il faudra posséder **R version 4.0.2** de préférence sur votre appareil. Pour cela, que votre appareil soit sous Linux, macOS, Windows ou autre, rendez vous la page de téléchargement de R en cliquant [ici](https://cran.r-project.org/mirrors.html). Puis suivez les instructions lors de l'installation.
 
-### B. RStudio
+###  1.2. <a name='B.RStudio'></a>B. RStudio
 
 Dans un second temps, installer R ne suffit pas. Le projet est plus accessible à l'utilisation si RStudio est installé sur votre appareil. Voici le lien pour le télécharger [ici](https://rstudio.com/products/rstudio/download/).
 
-### C. Le dashboard
+###  1.3. <a name='C.Ledashboard'></a>C. Le dashboard
 
-#### Télécharger le projet
+####  1.3.1. <a name='Tlchargerleprojet'></a>Télécharger le projet
 
 Le projet est téléchargeable sur le la page suivante [ici](https://git.esiee.fr/rafidini/projet_r). Celui-ci pourra être utilisé comme un "Git Repository", en "*forkant*" le projet, ou comme un projet dossier normal, en "*clonant*" le projet sur votre ordinateur.
 
-## 2. Installation des packages nécessaires et exécution
+##  2. <a name='Installationdespackagesncessairesetexcution'></a>2. Installation des packages nécessaires et exécution
 
 Pour que le projet marche comme il faut, des packages supplémentaires sont nécessaires. Le nom de ces packages est disponible dans le fichier *packages.csv*:
 
@@ -94,11 +127,11 @@ Lors de l'exécution des fenêtres apparaîtront, voici ce qu'il faudra faire av
 
 Si tout se passe bien, alors le projet est utilisable.
 
-## 3. Utilisation
+##  3. <a name='Utilisation'></a>3. Utilisation
 
 Une fois éxécuté, le "*dashboard*" apparaît sous la forme d'un navigateur web généré par RStudio.
 
-### A. Bar de navigation
+###  3.1. <a name='A.Bardenavigation'></a>A. Bar de navigation
 
 Pour d'accéder aux différentes pages proposées par l'application il y a la bar de navigation latéral (ci-dessous). L'application propose 3 pages:
 - *Obesity*
@@ -109,7 +142,7 @@ Pour d'accéder aux différentes pages proposées par l'application il y a la ba
 
 Tous sont accessibles en cliquant sur le label correspondant à la page de la bar de navigation.
 
-### B. Page *Obesity*
+###  3.2. <a name='B.PageObesity'></a>B. Page *Obesity*
 
 Sur cette page, *Obesity*,  on utilise le jeu de données *Obesity among adults by country, 1975-2016*. Celle-ci est divisée en plusieurs sous-pages:
 
@@ -131,7 +164,7 @@ Sur cette sous-page, on peut visualiser l'évolution de l'obésité au sein d'un
 
 Sur cette sous-page, on peut avoir accès aux données brutes sous la forme d'un tableau.
 
-### C. Page *Employment*
+###  3.3. <a name='C.PageEmployment'></a>C. Page *Employment*
 
 Sur cette page, *Employment*,  on utilise le jeu de données *Employment by activities (ISIC Rev.4)*. Celle-ci est divisée en plusieurs sous-pages comme *Obesity*:
 
@@ -155,7 +188,7 @@ Sur cette sous-page, on peut visualiser l'évolution de l'emploi au sein d'un pa
 
 Sur cette sous-page, on peut avoir accès aux données brutes sous la forme d'un tableau.
 
-### D. Page *Analytics*
+###  3.4. <a name='D.PageAnalytics'></a>D. Page *Analytics*
 
 Sur cette page, *Analytics*, on utilise les deux jeux de données utilisés pour les pages *Obesity* et *Employment*. Celle-ci est aussi divisée en plusieurs sous-pages:
 
@@ -173,9 +206,9 @@ Sur cette sous-page, on peut visualiser la correlation entre l'obésité et les 
 
 # II. Guide développeur
 
-## 1. Les répertoires & fichiers
+##  4. <a name='Lesrpertoiresfichiers'></a>1. Les répertoires & fichiers
 
-### A. *README.md*
+###  4.1. <a name='A.README.md'></a>A. *README.md*
 
 Ce fichier *Markdown*, que vous êtes actuellement en train de lire normalement, contient:
 - Présentation du projet
@@ -183,7 +216,7 @@ Ce fichier *Markdown*, que vous êtes actuellement en train de lire normalement,
 - Guide développeur
 - Rapport d'analyse
 
-### B. *data*
+###  4.2. <a name='B.data'></a>B. *data*
 
 Ce répertoire contient l'ensemble des jeux de données utilisés pour le projet. Voici leurs utilités:
 
@@ -191,33 +224,33 @@ Ce répertoire contient l'ensemble des jeux de données utilisés pour le projet
 
 - **obesity.csv**: Le jeu de données sur l'obésité, *Obesity among adults by country, 1975-2016*.
 
-### C. *images*
+###  4.3. <a name='C.images'></a>C. *images*
 
 Ce répertoire contient l'ensemble des images pour le projet, mais ces images servent principalement pour la rédaction de ce guide.
 
-### D. *packages.csv*
+###  4.4. <a name='D.packages.csv'></a>D. *packages.csv*
 
 Ce fichier texte contient les noms des différents packages nécessaires à l'utilisation du projet.
 
-### E. *process.R*
+###  4.5. <a name='E.process.R'></a>E. *process.R*
 
 Ce script *R* sert au traitement des données.
 
-### F. *app.R*
+###  4.6. <a name='F.app.R'></a>F. *app.R*
 
 Ce script *R* continent le code pour lancer l'application.
 
-### G. *global.R*
+###  4.7. <a name='G.global.R'></a>G. *global.R*
 
 Ce script *R* exécute le traitement des données, contient les fonctions à utiliser pour générer les graphiques/textes/valeurs necessaires à l'application.
 
-### H. *ui.R* & *server.R*
+###  4.8. <a name='H.ui.Rserver.R'></a>H. *ui.R* & *server.R*
 
 Ces scripts *R* s'occupent de l'interface utilisateur (*ui.R*) et du serveur (*server.R*). En soit *ui.R* permet de créer la page de manière visuelle mais l'interactivité avec les données se fait grâce à *server.R*.
 
-## 2. Le code
+##  5. <a name='Lecode'></a>2. Le code
 
-### A. process.R
+###  5.1. <a name='A.process.R'></a>A. process.R
 
 Ce script est structuré de la manière suivante:
 
@@ -319,7 +352,7 @@ Comme pour obesity, on va créer la variable continent à partir de ***countryco
   
 Celle-ci a été créée de manière subjective à notre binôme, les détails sont présents dans la fonction ***convertSubjectToActivity***.
 
-### B. global.R
+###  5.2. <a name='B.global.R'></a>B. global.R
 
 ```R
 #
@@ -344,7 +377,7 @@ Celle-ci a été créée de manière subjective à notre binôme, les détails s
 - *Data processing*: appel des fonctions de traitement de données présents dans *process.R*.
 - *Functions*: contient les différentes fonctions pour générer des graphiques/dataframe/valeurs que l'on utilisera dans *server.R*.
 
-### C. ui.R
+###  5.3. <a name='C.ui.R'></a>C. ui.R
 
 ```R
 #
@@ -376,7 +409,7 @@ Voici le rôle de chacunes de ces variables:
 - *sidebar*: Cette variable contient la bar de navigation latéral de l'application grâce à la fonction *dashboarSidebar*, il contient des items qui permettent de changer de page.
 - *ui*: Cette variable contient l'ensemble de l'interface grâce à la fonction *dashboarPage* qui prend en paramètre *nody*, *sidebar* et *ui*.
 
-### D. server.R
+###  5.4. <a name='D.server.R'></a>D. server.R
 
 ```R
 #
@@ -413,7 +446,7 @@ output$map <- renderLeaflet({ obesityMapByYear(input$year) })
 
 Ici on associe au composant du projet ayant comme identifiant *map* la carte qui est générée avec la fonction renderLeaflet et créée *obesityMapByYear* avec le paramètre *input$year* qui est généré par le composant, pouvant prendre une valeur en entrée, de l'interface utilisateur ayant l'identifiant *year*.
 
-### E. app.R
+###  5.5. <a name='E.app.R'></a>E. app.R
 
 ```R
 #
@@ -435,11 +468,11 @@ Ce petit script, mais très important, est divisé en deux parties.
 
 # III. Rapport d'analyse
 
-## 1. Les données
+##  6. <a name='Lesdonnes'></a>1. Les données
 
 A partir d'ici on suppose que les données on déjà été traitées, pour plus de détails [ici](#c-script-process_datapy).
 
-### A. Obesity among adults by country, 1975-2016
+###  6.1. <a name='A.Obesityamongadultsbycountry1975-2016'></a>A. Obesity among adults by country, 1975-2016
 
 Ce jeu de données provient de *[Kaggle](https://www.kaggle.com/amanarora/obesity-among-adults-by-country-19752016)*, une communauté regroupant des outils et des ressources pour la data science, précisément celui-ci a été modifié par l'utilisateur *[Aman Arora](https://www.kaggle.com/amanarora)* à partir des données originales se trouvant [ici](https://apps.who.int/gho/data/node.main.A900A?lang=en) sur le site l'*Organisation Mondiale de la Santé (OMS)*.
   
@@ -467,7 +500,7 @@ Voici la structure du jeu de données post-traitement:
 
 <br>
 
-### B. Employment by activities (ISIC Rev.4)
+###  6.2. <a name='B.EmploymentbyactivitiesISICRev.4'></a>B. Employment by activities (ISIC Rev.4)
 
 Ce jeu de données provient de *[OECD (Organisation for Economic Co-operation and Development)](https://stats.oecd.org/Index.aspx?QueryId=3491)*, une organisation économique intergouvernementale composée de 37 pays fondée en 1961 (*Wikipedia*) dans le but de stimuler la progression économique et les échanges.
   
@@ -517,11 +550,11 @@ Voici la structure du jeu de données post-traitement:
 
 
 
-## 2. Observations
+##  7. <a name='Observations'></a>2. Observations
 
 Maintenant analysons les jeux de données sur l'obésité et l'emploi afin de répondre à notre problématique.
 
-### A. Obesity among adults by country, 197=5-2016 
+###  7.1. <a name='A.Obesityamongadultsbycountry1975-2016-1'></a>A. Obesity among adults by country, 197=5-2016 
 
 - #### Cartographie & Distribution
 
@@ -571,7 +604,7 @@ Maintenant analysons les jeux de données sur l'obésité et l'emploi afin de r�
 
 A partir de toutes ces observations on peut conclure que l'obésité est une maladie qui touche le monde entier cependant certains sont plus touchés que d'autres, notamment les pays riches et  les plus développés à quelques exceptions près. En plus de cela, les femmes sont plus touchées que les hommes par cette maladie en général cependant on observe une future transition de cette tendance en Europe et en Amérique du nord. Malheureusement **l'obésité peut être décrite comme une fonction croissante par rapport au temps**, c'est-à-dire que le pourcentage de personnes obèses ne fait qu'augmenter.
 
-### B. Employment by activities (ISIC Rev.4)
+###  7.2. <a name='B.EmploymentbyactivitiesISICRev.4-1'></a>B. Employment by activities (ISIC Rev.4)
 
 - #### Analyse spacio-temporelle
 
@@ -612,7 +645,7 @@ A partir de toutes ces observations on peut conclure que l'obésité est une mal
 
 A partir de toutes ces observations on peut conclure qu'entre 2008 et 2018, l'emploi possédait une bonne dynamique car le nombre d'employés ne faisait qu'augmenter dans cet interval. Cependant à partir de 2019 il y a un arrêt de cette dynamique que l'on suppose être la crise sanitaire de la *COVID-19*. Puis les métiers bureautiques commencent peu à peu à devancer les métiers manuels dans certains pays européens.
 
-### C. Comparaison des jeux de données
+###  7.3. <a name='C.Comparaisondesjeuxdedonnes'></a>C. Comparaison des jeux de données
 
 Nos deux jeux de données nous ont appris beaucoup de choses, cependant il serait intéressant de conclure sur notre problématique en faisant des opérations entre  elles.
 
@@ -650,6 +683,6 @@ Malgré le fait que nos jeux de données soient chacunes assez complètes, elles
   
 En combinant nos jeux de données, on a découvert **3 groupes de pays qui présentent des comportements similaires** grâce à la correlation entre l'obésité et l'emploi dans les activités manuelles/bureautiques.
 
-## 3. Conclusion
+##  8. <a name='Conclusion'></a>3. Conclusion
 
 En conclusion on peut dire qu'il existe un lien entre l'obésité et la croissance des emplois en bureaux. Cependant ce lien n'est pas présent pour tous les pays car cela dépendant aussi de leur situation économique, politique <sup>et</sup>/<sub>ou </sub>démographique.
